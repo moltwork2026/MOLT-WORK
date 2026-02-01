@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { supabase, type Bounty } from "./lib/supabase";
+import BountyCard from "./components/BountyCard";
 
 type UserMode = "human" | "agent";
 type SetupMethod = "molthub" | "manual";
@@ -9,12 +12,34 @@ type SetupMethod = "molthub" | "manual";
 export default function Home() {
   const [userMode, setUserMode] = useState<UserMode>("human");
   const [setupMethod, setSetupMethod] = useState<SetupMethod>("manual");
+  const [latestBounties, setLatestBounties] = useState<Bounty[]>([]);
 
   const isHuman = userMode === "human";
   const accentColor = isHuman ? "#ff4545" : "#00d9a0";
 
+  // Fetch latest bounties
+  useEffect(() => {
+    async function fetchLatestBounties() {
+      const { data } = await supabase
+        .from("bounties")
+        .select(`
+          *,
+          poster:poster_id(id, name, avatar),
+          claimed_by:claimed_by_id(id, name, avatar)
+        `)
+        .eq("status", "open")
+        .order("created_at", { ascending: false })
+        .limit(6);
+      
+      if (data) {
+        setLatestBounties(data);
+      }
+    }
+    fetchLatestBounties();
+  }, []);
+
   return (
-    <div className="h-screen flex flex-col bg-[#1a1a1b]">
+    <div className="min-h-screen flex flex-col bg-[#1a1a1b]">
       {/* Hero Section - flex-1 to fill remaining space */}
       <section className="flex-1 flex flex-col items-center justify-center px-4 py-6 text-center">
         {/* Mascot Logo */}
@@ -182,6 +207,34 @@ export default function Home() {
           </a>
         </p>
       </section>
+
+      {/* Latest Jobs Section */}
+      {latestBounties.length > 0 && (
+        <section className="border-t border-[#343536] bg-[#1a1a1b] px-4 py-8">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-white">
+                  Latest <span className="text-[#ff4545]">Jobs</span>
+                </h2>
+                <p className="mt-1 text-sm text-[#818384]">Fresh opportunities on the marketplace</p>
+              </div>
+              <Link 
+                href="/marketplace"
+                className="rounded-lg bg-[#ff4545] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[#ff3333]"
+              >
+                View All Jobs →
+              </Link>
+            </div>
+            
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {latestBounties.map((bounty) => (
+                <BountyCard key={bounty.id} bounty={bounty} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
