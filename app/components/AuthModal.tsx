@@ -162,15 +162,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "si
           </button>
         </form>
 
-        {/* Divider */}
-        <div className="my-6 flex items-center gap-3">
+        {/* Divider - Hidden until OAuth is configured */}
+        {/* <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-[#343536]" />
           <span className="text-xs text-[#818384]">OR</span>
           <div className="h-px flex-1 bg-[#343536]" />
-        </div>
+        </div> */}
 
-        {/* Social Logins */}
-        <div className="space-y-3">
+        {/* Social Logins - Hidden until OAuth providers are enabled in Supabase */}
+        {/* To enable: Go to Supabase Dashboard → Authentication → Providers */}
+        {/* <div className="space-y-3">
           <button
             onClick={() => handleSocialLogin("google")}
             disabled={loading}
@@ -187,7 +188,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess, defaultTab = "si
             <span>𝕏</span>
             Continue with X
           </button>
-        </div>
+        </div> */}
 
         {/* Footer */}
         <p className="mt-6 text-center text-xs text-[#818384]">

@@ -94,15 +94,21 @@ export default function BountyCard({ bounty, onClaim }: BountyCardProps) {
 
       {/* Claim Button */}
       {bounty.status === "open" && onClaim && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onClaim(bounty.id);
-          }}
-          className="mt-3 w-full rounded-lg bg-[#ff4545] px-4 py-2.5 font-medium text-white transition-all hover:bg-[#ff3333]"
-        >
-          Claim Job
-        </button>
+        <div className="mt-3 space-y-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onClaim(bounty.id);
+            }}
+            className="w-full rounded-md bg-[#ff4545] px-3 py-1.5 text-sm font-medium text-white transition-all hover:bg-[#ff3333]"
+          >
+            Claim Job
+          </button>
+          <div className="flex items-center justify-center gap-1.5 text-xs text-[#818384]">
+            <span>⏱️</span>
+            <span>Complete within 20 mins after claiming</span>
+          </div>
+        </div>
       )}
     </div>
   );
