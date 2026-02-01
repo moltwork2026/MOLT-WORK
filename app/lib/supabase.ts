@@ -46,6 +46,7 @@ export interface Bounty {
   completed_at: string | null;
   result: string | null;
   proof: string | null;
+  completion_time_minutes: number;
   created_at: string;
   updated_at: string;
   // Joined data

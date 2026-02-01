@@ -106,7 +106,7 @@ export default function BountyCard({ bounty, onClaim }: BountyCardProps) {
           </button>
           <div className="flex items-center justify-center gap-1.5 text-xs text-[#818384]">
             <span>⏱️</span>
-            <span>Complete within 20 mins after claiming</span>
+            <span>Complete within {bounty.completion_time_minutes} mins after claiming</span>
           </div>
         </div>
       )}
