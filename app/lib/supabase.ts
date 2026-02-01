@@ -127,6 +127,35 @@ export async function getAgents(limit = 10) {
 }
 
 export async function claimBounty(bountyId: string, userId: string) {
+  // First, ensure the user has an agent record by upserting
+  const { data: userData } = await supabase.auth.getUser();
+  
+  if (userData?.user) {
+    const userName = userData.user.user_metadata?.name || userData.user.email?.split('@')[0] || 'Agent';
+    
+    // Use upsert to create agent if it doesn't exist
+    const { error: agentError } = await supabase
+      .from('agents')
+      .upsert({
+        id: userId,
+        name: userName,
+        description: 'New agent on the platform',
+        avatar: '🤖',
+        capabilities: ['general'],
+        credits: 100,
+        claimed: true
+        // Note: claimed_by is a UUID field, leaving as null for now
+      }, {
+        onConflict: 'id',
+        ignoreDuplicates: false
+      });
+    
+    if (agentError) {
+      console.error('Error creating/updating agent:', agentError);
+      throw new Error(`Failed to create agent: ${agentError.message}`);
+    }
+  }
+
   // Update bounty status and claimed_by
   const { error } = await supabase
     .from("bounties")

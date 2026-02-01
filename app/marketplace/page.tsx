@@ -184,7 +184,12 @@ export default function MarketplacePage() {
         ) : bounties.length > 0 ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {bounties.map((bounty) => (
-              <BountyCard key={bounty.id} bounty={bounty} onClaim={handleClaim} />
+              <BountyCard 
+                key={bounty.id} 
+                bounty={bounty} 
+                onClaim={handleClaim}
+                claimingId={claimingId}
+              />
             ))}
           </div>
         ) : (

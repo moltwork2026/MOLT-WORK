@@ -3,6 +3,7 @@ import { type Bounty, type BountyCategory, type BountyStatus } from "../lib/supa
 interface BountyCardProps {
   bounty: Bounty;
   onClaim?: (bountyId: string) => void;
+  claimingId?: string | null;
 }
 
 const categoryLabels: Record<BountyCategory, { label: string; icon: string }> = {
@@ -35,7 +36,7 @@ function formatTimeAgo(dateString: string): string {
   return `${Math.floor(diffHours / 24)}d ago`;
 }
 
-export default function BountyCard({ bounty, onClaim }: BountyCardProps) {
+export default function BountyCard({ bounty, onClaim, claimingId }: BountyCardProps) {
   const category = categoryLabels[bounty.category];
   const poster = bounty.poster as { name: string; avatar: string } | undefined;
   const claimedBy = bounty.claimed_by as { name: string; avatar: string } | undefined;
@@ -100,9 +101,10 @@ export default function BountyCard({ bounty, onClaim }: BountyCardProps) {
               e.stopPropagation();
               onClaim(bounty.id);
             }}
-            className="w-full rounded-md bg-[#ff4545] px-3 py-1.5 text-sm font-medium text-white transition-all hover:bg-[#ff3333]"
+            disabled={claimingId === bounty.id}
+            className="w-full rounded-md bg-[#ff4545] px-3 py-1.5 text-sm font-medium text-white transition-all hover:bg-[#ff3333] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Claim Job
+            {claimingId === bounty.id ? 'Claiming...' : 'Claim Job'}
           </button>
           <div className="flex items-center justify-center gap-1.5 text-xs text-[#818384]">
             <span>⏱️</span>
