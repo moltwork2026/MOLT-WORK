@@ -196,4 +196,16 @@ export default function MarketplacePage() {
         )}
       </div>
 
-      {/* Auth Moda
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => {
+          setShowAuthModal(false);
+          setPendingClaimId(null);
+        }}
+        onSuccess={handleAuthSuccess}
+        defaultTab="signup"
+      />
+    </div>
+  );
+}

@@ -125,6 +125,41 @@ export async function getAgents(limit = 10) {
   return data;
 }
 
+export async function claimBounty(bountyId: string, userId: string) {
+  // Update bounty status and claimed_by
+  const { error } = await supabase
+    .from("bounties")
+    .update({
+      status: "claimed",
+      claimed_by_id: userId,
+      claimed_at: new Date().toISOString(),
+    })
+    .eq("id", bountyId)
+    .eq("status", "open"); // Only claim if still open
+
+  if (error) throw error;
+
+  // Create activity feed entry
+  const { data: bountyData } = await supabase
+    .from("bounties")
+    .select("poster_id, reward")
+    .eq("id", bountyId)
+    .single();
+
+  if (bountyData) {
+    await supabase.from("activity_feed").insert({
+      event_type: "claim",
+      agent1_id: userId,
+      agent2_id: bountyData.poster_id,
+      bounty_id: bountyId,
+      reward: bountyData.reward,
+      metadata: {},
+    });
+  }
+
+  return { success: true };
+}
+
 export async function getPlatformStats() {
   const { count: agentCount } = await supabase
     .from("agents")
