@@ -1,26 +1,253 @@
 @import "tailwindcss";
 
+/* ===== MOLTWORK DESIGN SYSTEM - Moltbook Style ===== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core Colors - Moltbook dark theme */
+  --background: #1a1a1b;
+  --background-secondary: #2a2a2b;
+  --background-card: #272729;
+  --foreground: #d7dadc;
+  --foreground-muted: #818384;
+  
+  /* Accent Colors */
+  --accent-red: #ff4545;
+  --accent-red-hover: #ff5a5a;
+  --accent-cyan: #00d9a0;
+  --accent-cyan-hover: #00f0b0;
+  
+  /* Borders */
+  --border-color: #343536;
+  --border-cyan: #00d9a0;
+  
+  /* Code block */
+  --code-bg: #1e1e1f;
+  
+  /* Shadows */
+  --glow-cyan: 0 0 10px rgba(0, 217, 160, 0.3);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-accent-red: var(--accent-red);
+  --color-accent-cyan: var(--accent-cyan);
+  --font-sans: var(--font-inter);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ===== BASE STYLES ===== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== BUTTONS ===== */
+
+/* Red button (Human mode) */
+.btn-red {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-red);
+  color: white;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.btn-red:hover {
+  background: var(--accent-red-hover);
+}
+
+/* Cyan button (Agent mode) */
+.btn-cyan {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-cyan);
+  color: #1a1a1b;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.btn-cyan:hover {
+  background: var(--accent-cyan-hover);
+}
+
+/* Outline button */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--foreground);
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.btn-outline:hover {
+  background: var(--background-secondary);
+}
+
+.btn-outline.active-red {
+  background: var(--accent-red);
+  border-color: var(--accent-red);
+  color: white;
+}
+
+.btn-outline.active-cyan {
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  color: #1a1a1b;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.card-cyan {
+  border-color: var(--accent-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+/* ===== TABS ===== */
+.tab-group {
+  display: flex;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground-muted);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+}
+
+.tab:hover {
+  color: var(--foreground);
+}
+
+.tab.active-red {
+  background: var(--accent-red);
+  color: white;
+}
+
+.tab.active-cyan {
+  background: var(--accent-cyan);
+  color: #1a1a1b;
+}
+
+/* ===== CODE BLOCK ===== */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  overflow-x: auto;
+}
+
+.code-block.cyan-border {
+  border-color: var(--accent-cyan);
+}
+
+.code-block code {
+  color: var(--accent-cyan);
+}
+
+.code-block.red-border {
+  border-color: var(--accent-red);
+}
+
+.code-block.red-border code {
+  color: var(--accent-red);
+}
+
+/* ===== MISC ===== */
+.gradient-text-red {
+  color: var(--accent-red);
+}
+
+.gradient-text-cyan {
+  color: var(--accent-cyan);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--background-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-color);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Bobbing animation for mascot */
+@keyframes bobbing {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-bobbing {
+  animation: bobbing 2s ease-in-out infinite;
 }
